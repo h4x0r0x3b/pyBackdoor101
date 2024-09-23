@@ -26,6 +26,11 @@ while True:
 		connection.send(b"quit") # string
 		connection.close()
 		break
+
+	# Change Directory (cd)
+	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
+		connection.send(bytes(cmd, "utf-8"))
+		continue
 		
 	connection.send(bytes(cmd, "utf-8"))
 	

