@@ -8,7 +8,9 @@ listener.listen()
 
 print("Server has started")
 
-## If there will be a communication to be accepted
-## use accept method to listener, then get the connection and address
 connection, address = listener.accept()
 print(f"Connected to {address}")
+
+## use connection object, in order to send information
+## do it in form of bytes through typecasting b"message"
+connection.send(b"Hello there!")

