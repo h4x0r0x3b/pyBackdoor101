@@ -11,12 +11,10 @@ print("Server has started")
 connection, address = listener.accept()
 print(f"Connected to {address}")
 
-## create loop that will iterate continuously
 while True:
-	inp = input(">> ")
-	## convert the input string into bytes and decoded
-	connection.send(bytes(inp, "utf-8"))
+	## continuously send commands to be executed in client machine
+	cmd = input("enter a command: ") # string input	
+	connection.send(bytes(cmd, "utf-8")) # typecasted and converted into bytes
 	
-	## server machine should also receive information same as client
-	recv = connection.recv(2048)
-	print(recv.decode("utf-8"))
+	output = connection.recv(2048) # receive the output from client machine
+	print(output.decode("utf-8")) # display decoded bytes into string
