@@ -38,7 +38,7 @@ print(output.decode("utf-8").replace("\n",""), "<-- directory")
 ---
 #### Simplify the command execution
 
-> [simplified_cmd_exe.py](simplified_cmd_exe.py)
+> [smp_cmd_exe.py](smp_cmd_exe.py)
 ```python
 import subprocess
 
