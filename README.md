@@ -1,7 +1,6 @@
 <h2 align="center">Python Backdoor 101</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
-- - - - - - - - - - - - - - - - - - - - - -
 ---
 
 #### Domain
