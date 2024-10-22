@@ -14,11 +14,10 @@ print(f"Connected to {address}")
 while True:
 	cmd = input("enter a command: ")
 	
-	## if you want to quit and close the connection
 	if cmd == "quit":
-		connection.send(b"quit") # send quit message in bytes
-		connection.close()	# close the connection
-		break				# break the loop to stop
+		connection.send(b"quit")
+		connection.close()
+		break
 		
 	connection.send(bytes(cmd, "utf-8")) 
 	
