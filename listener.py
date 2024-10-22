@@ -14,7 +14,7 @@ def recv_data():
     original_size = connection.recv(2048).decode("utf-8")
     original_size = int(original_size)
     
-    data = connection.recv(2048) # data at instance
+    data = connection.recv(2048)
     while len(data) != original_size:
         data = data + connection.recv(2048)
     return data
@@ -23,7 +23,7 @@ while True:
 	cmd = input("enter a command: ")
 	
 	if cmd == "quit":
-		connection.send(b"quit") # string
+		connection.send(b"quit")
 		connection.close()
 		break
 		

