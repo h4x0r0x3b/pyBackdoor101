@@ -11,6 +11,4 @@ print("Server has started")
 connection, address = listener.accept()
 print(f"Connected to {address}")
 
-## use connection object, in order to send information
-## do it in form of bytes through typecasting b"message"
 connection.send(b"Hello there!")
