@@ -24,7 +24,7 @@ while True:
 		break
 
 	elif cmd[:2] == "cd":
-		os.chdir.(cmd[3:])
+		os.chdir(cmd[3:])
 		continue
 
 	try:

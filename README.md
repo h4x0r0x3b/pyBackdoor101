@@ -77,7 +77,7 @@ while True:
 	# Change Directory (cd)
 	elif cmd[:2] == "cd": # Check initial part (cd) slice using string [:index]
 		# use os module and chdir function (change directory)
-		os.chdir.(cmd[3:]) # give the command the 2nd argument after (cd)
+		os.chdir(cmd[3:]) # give the command the 2nd argument after (cd)
 		continue
 
 	try:
