@@ -1,11 +1,3 @@
-<h2 align="center">Maintaining DRY principle at Client Side</h2>
-<p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
-
-Make sure the server code is also following the DRY Principle
-
-- - - - - - - - - - - - - - - - - - - - - -
-> [listener.py](listener.py)
-```python
 import socket
 import subprocess
 
@@ -29,7 +21,6 @@ def recv_data():
     return data
 
 while True:
-	# Add try block
 	try: 
 		cmd = input("enter a command: ")
 		
@@ -62,7 +53,6 @@ while True:
 		output = recv_data()
 		print(output.decode("utf-8"))
 	
-	# Add except block to handle the exceptions
 	except FileNotFoundError:
 		print("File Not Found")
 		send_data(b"Error")
@@ -70,4 +60,3 @@ while True:
 		send_data(b"Wrong command")
 
 print("Server has stopped")
-```
