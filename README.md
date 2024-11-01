@@ -1,4 +1,4 @@
-<h2 align="center">Maintaining DRY principle at Client Side</h2>
+<h2 align="center">Maintaining DRY principle at Server Side</h2>
 <p align="center"><img width="350" height="350" src="./src/banner_cnph.gif"></p>
 
 Make sure the server code is also following the DRY Principle
